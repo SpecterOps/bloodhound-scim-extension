@@ -1,9 +1,11 @@
-name: Render SCIM icons
+name: Render SCIM Icons
 
 on:
   push:
     paths:
       - bh-scim-extension.json
+      - Icons/Render-CustomNodeIcons.ps1
+      - .github/workflows/render-icons.yml
 
 permissions:
   contents: write
