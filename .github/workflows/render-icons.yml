@@ -1,0 +1,51 @@
+name: Render SCIM icons
+
+on:
+  push:
+    paths:
+      - bh-scim-extension.json
+
+permissions:
+  contents: write
+
+jobs:
+  render-icons:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Render node icons
+        shell: pwsh
+        run: |
+          ./Icons/Render-CustomNodeIcons.ps1 -InputFile ./bh-scim-extension.json -OutputDir ./Icons
+
+      - name: Detect changes
+        id: changes
+        shell: pwsh
+        run: |
+          [string] $status = git status --porcelain
+          if ([string]::IsNullOrWhiteSpace($status)) {
+            "No changes." | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+            "has_changes=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+            return
+          }
+
+          "Files changed:" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+          # Substring(3) strips the two-character status code and following space to leave just the file path.
+          [string[]] $files = $status -split "`n" | Where-Object { -not [string]::IsNullOrWhiteSpace($PSItem) } | ForEach-Object { $PSItem.Trim() } | ForEach-Object { $PSItem.Substring(3) }
+          foreach ($file in $files) {
+            "- $file" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+          }
+
+          "has_changes=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.has_changes == 'true'
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Update SCIM icons"
+          git push
