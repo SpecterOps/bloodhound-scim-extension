@@ -14,7 +14,7 @@
     The relative scale for the Font Awesome icon within the circle. Default is 0.55.
 
 .PARAMETER InputFile
-    The path to the JSON schema file. Default is the repo root bh-scim-extension.json.
+    The path to the JSON schema file. Default is the hardcoded main extension file.
 
 .PARAMETER OutputDir
     The directory where PNG icons are written. Default is the Icons directory.
@@ -22,11 +22,15 @@
 .PARAMETER PackageCachePath
     The directory where NuGet packages are cached. Default is the BloodHound-IconRender
     subdirectory under the temp directory.
+.NOTES
+    Author: Michael Grafnetter
+    Version: 3.1
 #>
 
 #requires -Version 7
 
 [CmdletBinding()]
+[OutputType([void])]
 param(
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
@@ -51,6 +55,20 @@ param(
 
 Set-StrictMode -Version Latest
 
+class NodeDefinition {
+    [string] $NodeName
+    [string] $IconName
+    [string] $IconColor
+    [string] $IconType
+
+    NodeDefinition([string] $nodeName, [string] $iconName, [string] $iconColor, [string] $iconType) {
+        $this.NodeName = $nodeName
+        $this.IconName = $iconName
+        $this.IconColor = $iconColor
+        $this.IconType = $iconType
+    }
+}
+
 <#
 .SYNOPSIS
     Main entry point for the script.
@@ -74,26 +92,23 @@ function Main {
 
     # Parse the JSON file
     [psobject] $json = Get-Content -Path $InputFile | ConvertFrom-Json
-    [psobject[]] $nodeDefinitions = @($json.node_kinds | Sort-Object -Property name)
+    [NodeDefinition[]] $nodeDefinitions = Get-NodeDefinitions -Json $json
 
     # Generate PNG icons for each node kind
     foreach ($nodeDefinition in $nodeDefinitions) {
-        [string] $nodeName = $nodeDefinition.name
+        [string] $nodeName = $nodeDefinition.NodeName
+        [string] $iconName = $nodeDefinition.IconName
+        [string] $iconColor = $nodeDefinition.IconColor
+        [string] $iconType = $nodeDefinition.IconType
 
-        [string] $iconName = $null
-        [string] $iconColor = $null
-        [string] $iconType = 'font-awesome'
-
-        if ($nodeDefinition.icon -is [string]) {
-            $iconName = $nodeDefinition.icon
-            $iconColor = $nodeDefinition.color
+        if ([string]::IsNullOrWhiteSpace($iconName)) {
+            Write-Warning "Skipping ${nodeName}`: icon name is missing."
+            continue
         }
-        else {
-            $iconName = $nodeDefinition.icon.name
-            $iconColor = $nodeDefinition.icon.color
-            if ($nodeDefinition.icon.type) {
-                $iconType = $nodeDefinition.icon.type
-            }
+
+        if ([string]::IsNullOrWhiteSpace($iconColor)) {
+            Write-Warning "Skipping ${nodeName}`: icon color is missing."
+            continue
         }
 
         if (-not [string]::IsNullOrWhiteSpace($iconColor)) {
@@ -102,6 +117,69 @@ function Main {
 
         New-NodeIcon -NodeName $nodeName -Icon $iconName -Color $iconColor -IconType $iconType -OutputDir $OutputDir -ImageSize $ImageSize -IconScale $IconScale
     }
+}
+
+<#
+.SYNOPSIS
+    Normalizes node definitions from supported extension formats.
+
+.PARAMETER Json
+    The parsed JSON object.
+
+.OUTPUTS
+    Array of objects with Name, IconName, IconColor, and IconType properties.
+#>
+function Get-NodeDefinitions {
+    [OutputType([NodeDefinition])]
+    param(
+        [Parameter(Mandatory = $true)]
+        [psobject] $Json
+    )
+<#
+New extension format:
+{
+  "node_kinds": [
+    {
+      "name": "AZ_Tenant",
+      "display_name": "Azure Tenant",
+      "description": "An Azure tenant environment",
+      "is_display_kind": "true",
+      "icon": "cloud",
+      "color": "0xFF00FF"
+    }
+  ]
+}
+#>
+    if ($null -ne $Json.PSObject.Properties['node_kinds']) {
+        foreach ($node in $Json.node_kinds) {
+            [NodeDefinition]::new($node.name, $node.icon, $node.color, 'font-awesome')
+        }
+        return
+    }
+<#
+Old custom types format:
+{
+    "custom_types": {
+        "OktaOrganization": {
+            "icon": {
+                "color": "#16a5a5",
+                "name": "globe",
+                "type": "font-awesome"
+            }
+        }
+    }
+}
+#>
+    if ($null -ne $Json.PSObject.Properties['custom_types']) {
+        [string[]] $nodeNames = $Json.custom_types | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name
+        foreach ($nodeName in $nodeNames) {
+            [psobject] $nodeDefinition = $Json.custom_types.$nodeName
+            [NodeDefinition]::new($nodeName, $nodeDefinition.icon.name, $nodeDefinition.icon.color, $nodeDefinition.icon.type)
+        }
+        return
+    }
+
+    throw 'Unsupported schema format: expected node_kinds or custom_types.'
 }
 
 <#
@@ -290,6 +368,7 @@ function Import-NuGetLibrary {
     This ensures that the required types for rendering icons are available in the script.
 #>
 function Import-SkiaDependencies {
+    [OutputType([void])]
     param(
         [Parameter(Mandatory = $true)]
         [string] $CacheRoot
@@ -533,4 +612,3 @@ function New-NodeIcon {
 }
 
 Main
-
