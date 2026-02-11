@@ -18,6 +18,10 @@
 
 .PARAMETER OutputDir
     The directory where PNG icons are written. Default is the Icons directory.
+
+.PARAMETER PackageCachePath
+    The directory where NuGet packages are cached. Default is the BloodHound-IconRender
+    subdirectory under the temp directory.
 #>
 
 #requires -Version 7
@@ -39,6 +43,10 @@ param(
     [Parameter(Mandatory = $false)]
     [ValidateRange(0.1, 1.0)]
     [double] $IconScale = 0.55
+,
+    [Parameter(Mandatory = $false)]
+    [ValidateNotNullOrEmpty()]
+    [string] $PackageCachePath = (Join-Path -Path $env:TEMP -ChildPath 'BloodHound-IconRender')
 )
 
 Set-StrictMode -Version Latest
@@ -49,7 +57,7 @@ Set-StrictMode -Version Latest
 #>
 function Main {
     # Download and import dependencies from NuGet
-    Import-SkiaDependencies
+    Import-SkiaDependencies -CacheRoot $PackageCachePath
 
     if (-not ('SkiaSharp.SKBitmap' -as [type])) {
         throw 'SkiaSharp types are not available. Ensure SkiaSharp dependencies loaded correctly.'
@@ -282,19 +290,23 @@ function Import-NuGetLibrary {
     This ensures that the required types for rendering icons are available in the script.
 #>
 function Import-SkiaDependencies {
-    [string] $cacheRoot = Join-Path -Path $env:TEMP -ChildPath 'OktaHound-IconRender'
-    New-Item -Path $cacheRoot -ItemType Directory -Force | Out-Null
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $CacheRoot
+    )
+
+    New-Item -Path $CacheRoot -ItemType Directory -Force | Out-Null
 
     [string] $targetFrameworkMoniker = 'netstandard2.0'
 
-    [string] $skiaDll = Import-NuGetLibrary -PackageName 'SkiaSharp' -PackageVersion '2.88.9' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'SkiaSharp' -CacheRoot $cacheRoot
-    [string] $shimSkiaDll = Import-NuGetLibrary -PackageName 'ShimSkiaSharp' -PackageVersion '3.4.1' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'ShimSkiaSharp' -CacheRoot $cacheRoot
-    [string] $exCssDll = Import-NuGetLibrary -PackageName 'ExCSS' -PackageVersion '4.3.1' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'ExCSS' -CacheRoot $cacheRoot
-    [string] $svgCustomDll = Import-NuGetLibrary -PackageName 'Svg.Custom' -PackageVersion '3.4.1' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'Svg.Custom' -CacheRoot $cacheRoot
-    [string] $svgModelDll = Import-NuGetLibrary -PackageName 'Svg.Model' -PackageVersion '3.4.1' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'Svg.Model' -CacheRoot $cacheRoot
-    [string] $svgDll = Import-NuGetLibrary -PackageName 'Svg.Skia' -PackageVersion '3.4.1' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'Svg.Skia' -CacheRoot $cacheRoot
+    [string] $skiaDll = Import-NuGetLibrary -PackageName 'SkiaSharp' -PackageVersion '2.88.9' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'SkiaSharp' -CacheRoot $CacheRoot
+    [string] $shimSkiaDll = Import-NuGetLibrary -PackageName 'ShimSkiaSharp' -PackageVersion '3.4.1' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'ShimSkiaSharp' -CacheRoot $CacheRoot
+    [string] $exCssDll = Import-NuGetLibrary -PackageName 'ExCSS' -PackageVersion '4.3.1' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'ExCSS' -CacheRoot $CacheRoot
+    [string] $svgCustomDll = Import-NuGetLibrary -PackageName 'Svg.Custom' -PackageVersion '3.4.1' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'Svg.Custom' -CacheRoot $CacheRoot
+    [string] $svgModelDll = Import-NuGetLibrary -PackageName 'Svg.Model' -PackageVersion '3.4.1' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'Svg.Model' -CacheRoot $CacheRoot
+    [string] $svgDll = Import-NuGetLibrary -PackageName 'Svg.Skia' -PackageVersion '3.4.1' -TargetFrameworkMoniker $targetFrameworkMoniker -AssemblyName 'Svg.Skia' -CacheRoot $CacheRoot
 
-    [string] $nativeRoot = Get-NuGetPackage -Name 'SkiaSharp.NativeAssets.Win32' -Version '2.88.9' -CacheRoot $cacheRoot
+    [string] $nativeRoot = Get-NuGetPackage -Name 'SkiaSharp.NativeAssets.Win32' -Version '2.88.9' -CacheRoot $CacheRoot
 
     [string] $architecture = $env:PROCESSOR_ARCHITECTURE
     [string] $nativePath = switch ($architecture) {

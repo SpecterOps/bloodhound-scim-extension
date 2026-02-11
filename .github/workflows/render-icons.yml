@@ -14,12 +14,22 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Cache NuGet icon dependencies
+        uses: actions/cache@v5
+        with:
+          path: ${{ runner.temp }}\BloodHound-IconRender
+          key: ${{ runner.os }}-icon-render-${{ hashFiles('Icons/Render-CustomNodeIcons.ps1') }}
+          restore-keys: |
+            ${{ runner.os }}-icon-render-
 
       - name: Render node icons
         shell: pwsh
+        env:
+          ICON_CACHE_PATH: ${{ runner.temp }}\BloodHound-IconRender
         run: |
-          ./Icons/Render-CustomNodeIcons.ps1 -InputFile ./bh-scim-extension.json -OutputDir ./Icons
+          ./Icons/Render-CustomNodeIcons.ps1 -InputFile ./bh-scim-extension.json -OutputDir ./Icons -PackageCachePath $env:ICON_CACHE_PATH
 
       - name: Detect changes
         id: changes
