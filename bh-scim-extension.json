@@ -32,7 +32,7 @@
     {
       "name": "SCIM_Role",
       "display_name": "SCIM Role",
-      "description": "",
+      "description": "A role assigned to users",
       "is_display_kind": "true",
       "icon": "clipboard-list",
       "color": "0xF59E0B"
