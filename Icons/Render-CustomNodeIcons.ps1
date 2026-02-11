@@ -42,8 +42,8 @@ param(
 
     [Parameter(Mandatory = $false)]
     [ValidateRange(0.1, 1.0)]
-    [double] $IconScale = 0.55
-,
+    [double] $IconScale = 0.55,
+
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string] $PackageCachePath = (Join-Path -Path $env:TEMP -ChildPath 'BloodHound-IconRender')
