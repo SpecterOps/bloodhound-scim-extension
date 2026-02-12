@@ -11,7 +11,7 @@
       "description": "An organization or tenant in the IdP",
       "is_display_kind": "true",
       "icon": "building-circle-arrow-right",
-      "color": "0x3B82F6"
+      "color": "#3B82F6"
     },
     {
       "name": "SCIM_User",
@@ -19,7 +19,7 @@
       "description": "A user account provisioned via SCIM",
       "is_display_kind": "true",
       "icon": "user-gear",
-      "color": "0x10B981"
+      "color": "#10B981"
     },
     {
       "name": "SCIM_Group",
@@ -27,7 +27,7 @@
       "description": "A group provisioned via SCIM",
       "is_display_kind": "true",
       "icon": "users-gear",
-      "color": "0xEF4444"
+      "color": "#EF4444"
     },
     {
       "name": "SCIM_Role",
@@ -35,7 +35,7 @@
       "description": "A role assigned to users",
       "is_display_kind": "true",
       "icon": "clipboard-list",
-      "color": "0xF59E0B"
+      "color": "#F59E0B"
     },
     {
       "name": "SCIM_Base",
@@ -43,7 +43,7 @@
       "description": "A base node type for SCIM resources",
       "is_display_kind": "false",
       "icon": "group-arrows-rotate",
-      "color": "0x6B7280"
+      "color": "#6B7280"
     }
   ],
   "relationship_kinds": [
