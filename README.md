@@ -26,14 +26,12 @@ In BloodHound, we represent them as the following node types:
 | ![SCIM_Group Icon](Icons/SCIM_Group.png) | [SCIM_Group](#scim_group-node) | A group provisioned via SCIM |
 | ![SCIM_Role Icon](Icons/SCIM_Role.png)   | [SCIM_Role](#scim_role-node) | A role assigned to users |
 | ![SCIM_Organization Icon](Icons/SCIM_Organization.png) | [SCIM_Organization](#scim_organization-node) | An organization or tenant in the IdP |
-| ![SCIM_Base Icon](Icons/SCIM_Base.png) | [SCIM_Base](#scim_base-node) | A base node type for SCIM resources | 
 
 > [!NOTE]
 > To keep the schema simple, we do not create separate node types for `User` and `EnterpriseUser` in OpenGraph,
 > as defined in the SCIM specification.
 > On the other hand, we do create a separate `SCIM_Role` node type to represent the `roles` attribute of users.
 > Similarly, we create a `SCIM_Organization` node type to represent each synchronized organization or tenant.
-> We also renamed the `Resource` base entity type to `SCIM_Base`, to follow BH naming conventions.
 
 ### SCIM_User Node
 
