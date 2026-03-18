@@ -12,6 +12,8 @@ to provision user accounts and groups to/from applications.
 This schema extension allows BloodHound to represent SCIM-provisioned users and groups as nodes in the graph,
 avoiding the need to introduce technology-specific edges for each integration, such as Okta+GitHub, Entra+GitHub, or Entra+SalesForce.
 
+![SCIM_Users of a SCIM_Group combined to a GH_EnterpriseTeam](/Documentation/Images/scim-example.png)
+
 ## Documentation
 
 For full documentation, see the [BloodHound Docs](https://bloodhound.specterops.io/opengraph/extensions/scim/).
