@@ -2,8 +2,8 @@
 
 ## Edge Schema
 
-- Source: [SCIM_User](../NodeDescriptions/SCIM_User.md), [SCIM_Group](../NodeDescriptions/SCIM_Group.md)
-- Destination: [SCIM_Group](../NodeDescriptions/SCIM_Group.md)
+- Source: [SCIM_User](../node-descriptions/SCIM_User.md), [SCIM_Group](../node-descriptions/SCIM_Group.md)
+- Destination: [SCIM_Group](../node-descriptions/SCIM_Group.md)
 
 ## General Information
 

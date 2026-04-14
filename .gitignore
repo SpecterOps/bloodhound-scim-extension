@@ -1,2 +1,5 @@
 ## Project-specific ignores
-Documentation/OfficialDocs/
+docs/official-docs/
+
+# Codex
+.codex

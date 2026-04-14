@@ -1,0 +1,12 @@
+{
+    "extensionSchemaPath": "bh-scim-extension.json",
+    "extensionShortName": "SCIM",
+    "gitHubBaseUrl": "https://github.com/SpecterOps/bloodhound-scim-extension",
+    "stripTitlePrefix": "",
+    "nodeDescriptionsDir": "docs/nodes",
+    "edgeDescriptionsDir": "docs/edges",
+    "openHoundStructure": false,
+    "imagesDir": "docs/images",
+    "iconSize": 32,
+    "iconScale": 0.55
+}

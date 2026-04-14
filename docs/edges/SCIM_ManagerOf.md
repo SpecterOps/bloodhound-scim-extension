@@ -2,8 +2,8 @@
 
 ## Edge Schema
 
-- Source: [SCIM_User](../NodeDescriptions/SCIM_User.md)
-- Destination: [SCIM_User](../NodeDescriptions/SCIM_User.md)
+- Source: [SCIM_User](../node-descriptions/SCIM_User.md)
+- Destination: [SCIM_User](../node-descriptions/SCIM_User.md)
 
 ## General Information
 
@@ -13,5 +13,5 @@ The [SCIM_ManagerOf](SCIM_ManagerOf.md) edge represents the managerial relations
 graph LR
     node1("SCIM_User mscott")
     node2("SCIM_User dschrute")
-    node1 -- SCIM_ManagerOf --> node2
+    node1 -. SCIM_ManagerOf .-> node2
 ```

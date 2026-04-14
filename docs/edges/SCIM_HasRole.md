@@ -2,8 +2,8 @@
 
 ## Edge Schema
 
-- Source: [SCIM_User](../NodeDescriptions/SCIM_User.md)
-- Destination: [SCIM_Role](../NodeDescriptions/SCIM_Role.md)
+- Source: [SCIM_User](../node-descriptions/SCIM_User.md)
+- Destination: [SCIM_Role](../node-descriptions/SCIM_Role.md)
 
 ## General Information
 

@@ -2,7 +2,7 @@
 
 ## Edge Schema
 
-- Source: [SCIM_User](../NodeDescriptions/SCIM_User.md), [SCIM_Group](../NodeDescriptions/SCIM_Group.md)
+- Source: [SCIM_User](../node-descriptions/SCIM_User.md), [SCIM_Group](../node-descriptions/SCIM_Group.md)
 - Destination: [GH_ExternalIdentity](https://bloodhound.specterops.io/opengraph/extensions/githound/reference/nodes/gh_externalidentity), [GH_Group](https://bloodhound.specterops.io/opengraph/extensions/githound/reference/nodes/gh_group)
 
 ## General Information
