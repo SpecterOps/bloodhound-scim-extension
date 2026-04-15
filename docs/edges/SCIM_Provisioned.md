@@ -3,7 +3,7 @@
 ## Edge Schema
 
 - Source: [SCIM_User](../node-descriptions/SCIM_User.md), [SCIM_Group](../node-descriptions/SCIM_Group.md)
-- Destination: [GH_ExternalIdentity](https://bloodhound.specterops.io/opengraph/extensions/github/nodes/gh_externalidentity), [GH_Team](https://bloodhound.specterops.io/opengraph/extensions/github/nodes/gh_team)
+- Destination: [GH_ExternalIdentity](https://bloodhound.specterops.io/opengraph/extensions/github/nodes/gh_externalidentity), [GH_EnterpriseTeam](https://bloodhound.specterops.io/opengraph/extensions/github/nodes/gh_enterpriseteam)
 
 ## General Information
 
@@ -14,7 +14,7 @@ graph LR
     node1("SCIM_User dschrute")
     node2("GH_ExternalIdentity dschrute")
     node3("SCIM_Group Sales Team")
-    node4("GH_Team Sales Team")
+    node4("GH_EnterpriseTeam Sales Team")
     node1 -- SCIM_Provisioned --> node2
     node3 -- SCIM_Provisioned --> node4
 ```
