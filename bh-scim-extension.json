@@ -2,7 +2,7 @@
   "schema": {
     "name": "SOSCIM",
     "display_name": "SCIM Extension (by SpecterOps)",
-    "version": "v1.2.1",
+    "version": "v1.2.2",
     "namespace": "SCIM"
   },
   "node_kinds": [
@@ -66,15 +66,6 @@
       "is_traversable": true
     }
   ],
-  "environments": [
-    {
-      "environment_kind": "SCIM_Organization",
-      "source_kind": "SCIM",
-      "principal_kinds": [
-        "SCIM_User",
-        "SCIM_Group"
-      ]
-    }
-  ],
+  "environments": [],
   "relationship_findings": []
 }
