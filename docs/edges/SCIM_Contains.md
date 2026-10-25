@@ -2,8 +2,8 @@
 
 ## Edge Schema
 
-- Source: [SCIM_Organization](../node-descriptions/SCIM_Organization.md)
-- Destination: [SCIM_User](../node-descriptions/SCIM_User.md), [SCIM_Group](../node-descriptions/SCIM_Group.md), [SCIM_Role](../node-descriptions/SCIM_Role.md)
+- Source: [SCIM_Organization](../nodes/SCIM_Organization.md)
+- Destination: [SCIM_User](../nodes/SCIM_User.md), [SCIM_Group](../nodes/SCIM_Group.md), [SCIM_Role](../nodes/SCIM_Role.md)
 
 ## General Information
 
@@ -11,10 +11,10 @@ The [SCIM_Contains](SCIM_Contains.md) edge represents the containment relationsh
 
 ```mermaid
 graph LR
-    node1("SCIM_Organization Contoso")
-    node2("SCIM_User dschrute")
-    node3("SCIM_Group Sales Team")
-    node4("SCIM_Role Sales")
+    node1("fa:fa-building SCIM_Organization Contoso")
+    node2("fa:fa-user SCIM_User dschrute")
+    node3("fa:fa-users SCIM_Group Sales Team")
+    node4("fa:fa-id-badge SCIM_Role Sales")
     node1 -- SCIM_Contains --> node2
     node1 -- SCIM_Contains --> node3
     node1 -- SCIM_Contains --> node4

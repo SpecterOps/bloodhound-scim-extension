@@ -36,14 +36,26 @@ Represents a user account provisioned via the [System for Cross-domain Identity 
 ## Diagram
 
 ```mermaid
-flowchart TD
-    SCIM_Organization[fa:fa-building SCIM_Organization]
-    SCIM_User[fa:fa-user SCIM_User]
-    SCIM_Group[fa:fa-users SCIM_Group]
-    SCIM_Role[fa:fa-id-badge SCIM_Role]
+flowchart LR
+    subgraph Okta
+        Okta_User[fa:fa-user Okta_User]
+    end
 
-    SCIM_Organization -->|SCIM_Contains| SCIM_User
-    SCIM_User -->|SCIM_MemberOf| SCIM_Group
-    SCIM_User -->|SCIM_HasRole| SCIM_Role
-    SCIM_User -->|SCIM_ManagerOf| SCIM_User
+    subgraph SCIM
+        SCIM_Organization[fa:fa-building SCIM_Organization]
+        SCIM_User[fa:fa-user SCIM_User]
+        SCIM_Role[fa:fa-id-badge SCIM_Role]
+
+        SCIM_Organization -->|SCIM_Contains| SCIM_User
+        SCIM_User -->|SCIM_HasRole| SCIM_Role
+    end
+
+    subgraph "Entra ID"
+        AZUser[fa:fa-user AZUser]
+    end
+
+    Okta_User -.->|SCIM_Provisioned| SCIM_User
+    Okta_User -->|SCIM_PasswordSync| SCIM_User
+    SCIM_User -.->|SCIM_Provisioned| AZUser
+    SCIM_User -->|SCIM_PasswordSync| AZUser
 ```

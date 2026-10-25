@@ -28,4 +28,6 @@
 | [SCIM_HasRole](edges/SCIM_HasRole.md) | ✅ | User is assigned to a role |
 | [SCIM_ManagerOf](edges/SCIM_ManagerOf.md) | ❌ | User is a manager of another user |
 | [SCIM_MemberOf](edges/SCIM_MemberOf.md) | ✅ | User or group is a member of a group |
-| [SCIM_Provisioned](edges/SCIM_Provisioned.md) | ✅ | SCIM resource is provisioned to a target system |
+| [SCIM_Provisioned](edges/SCIM_Provisioned.md) | ❌ | Resources are provisioned between source and target systems over the SCIM protocol |
+| [SCIM_MembershipSync](edges/SCIM_MembershipSync.md) | ✅ | Group membership is synchronized between source and target systems over the SCIM protocol |
+| [SCIM_PasswordSync](edges/SCIM_PasswordSync.md) | ✅ | User passwords are synchronized between source and target systems over the SCIM protocol |

@@ -2,7 +2,7 @@
   "schema": {
     "name": "SOSCIM",
     "display_name": "SCIM Extension (by SpecterOps)",
-    "version": "v1.2.2",
+    "version": "v1.3",
     "namespace": "SCIM"
   },
   "node_kinds": [
@@ -62,7 +62,17 @@
     },
     {
       "name": "SCIM_Provisioned",
-      "description": "SCIM resource is provisioned to a target system",
+      "description": "Resources are provisioned between source and target systems over the SCIM protocol",
+      "is_traversable": false
+    },
+    {
+      "name": "SCIM_MembershipSync",
+      "description": "Group membership is synchronized between source and target systems over the SCIM protocol",
+      "is_traversable": true
+    },
+    {
+      "name": "SCIM_PasswordSync",
+      "description": "User passwords are synchronized between source and target systems over the SCIM protocol",
       "is_traversable": true
     }
   ],
