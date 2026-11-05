@@ -2,8 +2,8 @@
 
 ## Edge Schema
 
-- Source: [SCIM_User](../node-descriptions/SCIM_User.md)
-- Destination: [SCIM_Role](../node-descriptions/SCIM_Role.md)
+- Source: [SCIM_User](../nodes/SCIM_User.md)
+- Destination: [SCIM_Role](../nodes/SCIM_Role.md)
 
 ## General Information
 
@@ -11,7 +11,7 @@ The [SCIM_HasRole](SCIM_HasRole.md) edge represents the relationship between use
 
 ```mermaid
 graph LR
-    node1("SCIM_User dschrute")
-    node2("SCIM_Role Sales")
+    node1("fa:fa-user SCIM_User dschrute")
+    node2("fa:fa-id-badge SCIM_Role Sales")
     node1 -- SCIM_HasRole --> node2
 ```

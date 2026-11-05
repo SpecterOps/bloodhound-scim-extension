@@ -2,8 +2,8 @@
 
 ## Edge Schema
 
-- Source: [SCIM_User](../node-descriptions/SCIM_User.md), [SCIM_Group](../node-descriptions/SCIM_Group.md)
-- Destination: [SCIM_Group](../node-descriptions/SCIM_Group.md)
+- Source: [SCIM_User](../nodes/SCIM_User.md), [SCIM_Group]
+- Destination: [SCIM_Group]
 
 ## General Information
 
@@ -11,9 +11,11 @@ The [SCIM_MemberOf](SCIM_MemberOf.md) edge represents group membership relations
 
 ```mermaid
 graph LR
-    node1("SCIM_User dschrute")
-    node2("SCIM_Group Sales Team")
-    node3("SCIM_Group All Employees")
+    node1("fa:fa-user SCIM_User dschrute")
+    node2("fa:fa-users SCIM_Group Sales Team")
+    node3("fa:fa-users SCIM_Group All Employees")
     node1 -- SCIM_MemberOf --> node2
     node2 -- SCIM_MemberOf --> node3
 ```
+
+[SCIM_Group]: ../nodes/SCIM_Group.md

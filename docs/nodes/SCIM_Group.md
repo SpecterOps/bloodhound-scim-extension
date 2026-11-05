@@ -14,12 +14,30 @@ Represents a group resource provisioned via the [System for Cross-domain Identit
 ## Diagram
 
 ```mermaid
-flowchart TD
-    SCIM_Organization[fa:fa-building SCIM_Organization]
-    SCIM_User[fa:fa-user SCIM_User]
-    SCIM_Group[fa:fa-users SCIM_Group]
+flowchart LR
+    subgraph Okta
+        Okta_User[fa:fa-user Okta_User]
+        Okta_Group[fa:fa-users Okta_Group]
 
-    SCIM_Organization -->|SCIM_Contains| SCIM_Group
-    SCIM_User -->|SCIM_MemberOf| SCIM_Group
-    SCIM_Group -->|SCIM_MemberOf| SCIM_Group
+        Okta_User -->|Okta_MemberOf| Okta_Group
+    end
+
+    subgraph SCIM
+        SCIM_User[fa:fa-user SCIM_User]
+        SCIM_Group[fa:fa-users SCIM_Group]
+
+        SCIM_User -->|SCIM_MemberOf| SCIM_Group
+    end
+
+    subgraph "Entra ID"
+        AZUser[fa:fa-user AZUser]
+        AZGroup[fa:fa-users AZGroup]
+
+        AZUser -->|AZMemberOf| AZGroup
+    end
+
+    SCIM_Group -->|SCIM_MembershipSync| AZGroup
+    Okta_Group -->|SCIM_MembershipSync| SCIM_Group
+    Okta_User -.->|SCIM_Provisioned| SCIM_User
+    SCIM_User -.->|SCIM_Provisioned| AZUser
 ```

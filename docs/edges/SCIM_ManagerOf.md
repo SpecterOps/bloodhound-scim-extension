@@ -2,8 +2,8 @@
 
 ## Edge Schema
 
-- Source: [SCIM_User](../node-descriptions/SCIM_User.md)
-- Destination: [SCIM_User](../node-descriptions/SCIM_User.md)
+- Source: [SCIM_User]
+- Destination: [SCIM_User]
 
 ## General Information
 
@@ -11,7 +11,9 @@ The [SCIM_ManagerOf](SCIM_ManagerOf.md) edge represents the managerial relations
 
 ```mermaid
 graph LR
-    node1("SCIM_User mscott")
-    node2("SCIM_User dschrute")
+    node1("fa:fa-user SCIM_User mscott")
+    node2("fa:fa-user SCIM_User dschrute")
     node1 -. SCIM_ManagerOf .-> node2
 ```
+
+[SCIM_User]: ../nodes/SCIM_User.md

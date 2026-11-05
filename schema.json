@@ -1,0 +1,229 @@
+{
+  "schema": {
+    "name": "SOSCIM",
+    "display_name": "SCIM Extension (by SpecterOps)",
+    "version": "v1.3.0",
+    "namespace": "SCIM"
+  },
+  "node_kinds": [
+    {
+      "name": "SCIM_Organization",
+      "display_name": "SCIM Organization",
+      "description": "An organization or tenant in the IdP",
+      "is_display_kind": true,
+      "icon": "building-circle-arrow-right",
+      "color": "#3B82F6",
+      "info": {
+        "description": {
+          "title": "Description",
+          "position": 1,
+          "markdown": {
+            "content": "An identity provider organization or tenant whose users, groups, and/or role assignments are synchronized through SCIM. It provides the ownership boundary for those resources.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/nodes/scim_organization)"
+          }
+        },
+        "hybrid_relationships": {
+          "title": "Hybrid Relationships",
+          "position": 2,
+          "markdown": {
+            "content": "{{ $objectID := .Properties.objectid | default \"UnknownId\" | replace \"\\\\\" \"\\\\\\\\\" | replace \"'\" \"\\\\'\" }}\n{{ $query_inbound := printf \"MATCH p = (selected:SCIM_Organization {objectid: '%s'})<-[:SCIM_Provisioned]-()\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Inbound](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_inbound | b64enc | urlquery }})\n{{ $query_outbound := printf \"MATCH p = (selected:SCIM_Organization {objectid: '%s'})-[:SCIM_Provisioned]->()\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Outbound](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_outbound | b64enc | urlquery }})\n{{ $query_both := printf \"MATCH p = (selected:SCIM_Organization {objectid: '%s'})-[:SCIM_Provisioned]-()\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Both](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_both | b64enc | urlquery }})"
+          }
+        },
+        "contained_resources": {
+          "title": "Contained Resources",
+          "position": 3,
+          "markdown": {
+            "content": "{{ $objectID := .Properties.objectid | default \"UnknownId\" | replace \"\\\\\" \"\\\\\\\\\" | replace \"'\" \"\\\\'\" }}\n{{ $query_users := printf \"MATCH p = (selected:SCIM_Organization {objectid: '%s'})-[:SCIM_Contains]->(resource:SCIM_User)\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Users](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_users | b64enc | urlquery }})\n{{ $query_groups := printf \"MATCH p = (selected:SCIM_Organization {objectid: '%s'})-[:SCIM_Contains]->(resource:SCIM_Group)\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Groups](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_groups | b64enc | urlquery }})\n{{ $query_roles := printf \"MATCH p = (selected:SCIM_Organization {objectid: '%s'})-[:SCIM_Contains]->(resource:SCIM_Role)\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Roles](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_roles | b64enc | urlquery }})\n{{ $query_all := printf \"MATCH p = (selected:SCIM_Organization {objectid: '%s'})-[:SCIM_Contains]->(resource:SCIM)\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Any](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_all | b64enc | urlquery }})"
+          }
+        }
+      }
+    },
+    {
+      "name": "SCIM_User",
+      "display_name": "SCIM User",
+      "description": "A user account provisioned via SCIM",
+      "is_display_kind": true,
+      "icon": "user-gear",
+      "color": "#10B981",
+      "info": {
+        "description": {
+          "title": "Description",
+          "position": 1,
+          "markdown": {
+            "content": "A user account provisioned through SCIM. If enabled in source and target systems, password synchronization may be performed.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/nodes/scim_user)"
+          }
+        },
+        "hybrid_relationships": {
+          "title": "Hybrid Relationships",
+          "position": 2,
+          "markdown": {
+            "content": "{{ $objectID := .Properties.objectid | default \"UnknownId\" | replace \"\\\\\" \"\\\\\\\\\" | replace \"'\" \"\\\\'\" }}\n{{ $query_inbound := printf \"MATCH p = (selected:SCIM_User {objectid: '%s'})<-[:SCIM_Provisioned|SCIM_PasswordSync]-()\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Inbound](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_inbound | b64enc | urlquery }})\n{{ $query_outbound := printf \"MATCH p = (selected:SCIM_User {objectid: '%s'})-[:SCIM_Provisioned|SCIM_PasswordSync]->()\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Outbound](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_outbound | b64enc | urlquery }})\n{{ $query_both := printf \"MATCH p = (selected:SCIM_User {objectid: '%s'})-[:SCIM_Provisioned|SCIM_PasswordSync]-()\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Both](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_both | b64enc | urlquery }})"
+          }
+        },
+        "organization": {
+          "title": "Organization",
+          "position": 3,
+          "markdown": {
+            "content": "{{ $objectID := .Properties.objectid | default \"UnknownId\" | replace \"\\\\\" \"\\\\\\\\\" | replace \"'\" \"\\\\'\" }}\n{{ $query_group_memberships := printf \"MATCH p = (selected:SCIM_User {objectid: '%s'})-[:SCIM_MemberOf*1..]->(group:SCIM_Group)\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Group Memberships](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_group_memberships | b64enc | urlquery }})\n{{ $query_role_assignments := printf \"MATCH p = (selected:SCIM_User {objectid: '%s'})-[:SCIM_HasRole]->(role:SCIM_Role)\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Role Assignments](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_role_assignments | b64enc | urlquery }})\n{{ $query_manager := printf \"MATCH p = (selected:SCIM_User {objectid: '%s'})<-[:SCIM_ManagerOf]-(manager:SCIM_User)\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Manager](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_manager | b64enc | urlquery }})\n{{ $query_direct_reports := printf \"MATCH p = (selected:SCIM_User {objectid: '%s'})-[:SCIM_ManagerOf]->(report:SCIM_User)\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Direct Reports](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_direct_reports | b64enc | urlquery }})"
+          }
+        }
+      }
+    },
+    {
+      "name": "SCIM_Group",
+      "display_name": "SCIM Group",
+      "description": "A group provisioned via SCIM",
+      "is_display_kind": true,
+      "icon": "users-gear",
+      "color": "#EF4444",
+      "info": {
+        "description": {
+          "title": "Description",
+          "position": 1,
+          "markdown": {
+            "content": "A group provisioned through SCIM. Users and nested groups can be members. Configured membership synchronization propagates membership changes to linked groups, teams, or roles in other systems.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/nodes/scim_group)"
+          }
+        },
+        "hybrid_relationships": {
+          "title": "Hybrid Relationships",
+          "position": 2,
+          "markdown": {
+            "content": "{{ $objectID := .Properties.objectid | default \"UnknownId\" | replace \"\\\\\" \"\\\\\\\\\" | replace \"'\" \"\\\\'\" }}\n{{ $query_inbound := printf \"MATCH p = (selected:SCIM_Group {objectid: '%s'})<-[:SCIM_MembershipSync]-()\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Inbound](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_inbound | b64enc | urlquery }})\n{{ $query_outbound := printf \"MATCH p = (selected:SCIM_Group {objectid: '%s'})-[:SCIM_MembershipSync]->()\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Outbound](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_outbound | b64enc | urlquery }})\n{{ $query_both := printf \"MATCH p = (selected:SCIM_Group {objectid: '%s'})-[:SCIM_MembershipSync]-()\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Both](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_both | b64enc | urlquery }})"
+          }
+        },
+        "members": {
+          "title": "Members",
+          "position": 3,
+          "markdown": {
+            "content": "{{ $objectID := .Properties.objectid | default \"UnknownId\" | replace \"\\\\\" \"\\\\\\\\\" | replace \"'\" \"\\\\'\" }}\n{{ $query_members := printf \"MATCH p = (member)-[:SCIM_MemberOf*1..]->(selected:SCIM_Group {objectid: '%s'})\\nWHERE member:SCIM_User OR member:SCIM_Group\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Members](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_members | b64enc | urlquery }})\n{{ $query_member_of := printf \"MATCH p = (selected:SCIM_Group {objectid: '%s'})-[:SCIM_MemberOf*1..]->(group:SCIM_Group)\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Member Of](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_member_of | b64enc | urlquery }})"
+          }
+        }
+      }
+    },
+    {
+      "name": "SCIM_Role",
+      "display_name": "SCIM Role",
+      "description": "A role assigned to users",
+      "is_display_kind": true,
+      "icon": "clipboard-list",
+      "color": "#F59E0B",
+      "info": {
+        "description": {
+          "title": "Description",
+          "position": 1,
+          "markdown": {
+            "content": "A role derived from the roles attribute of SCIM users, rather than a standalone SCIM resource.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/nodes/scim_role)"
+          }
+        },
+        "relationships": {
+          "title": "Relationships",
+          "position": 2,
+          "markdown": {
+            "content": "{{ $objectID := .Properties.objectid | default \"UnknownId\" | replace \"\\\\\" \"\\\\\\\\\" | replace \"'\" \"\\\\'\" }}\n{{ $query_containing_organization := printf \"MATCH p = (organization:SCIM_Organization)-[:SCIM_Contains]->(selected:SCIM_Role {objectid: '%s'})\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Containing Organization](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_containing_organization | b64enc | urlquery }})\n{{ $query_assigned_users := printf \"MATCH p = (user:SCIM_User)-[:SCIM_HasRole]->(selected:SCIM_Role {objectid: '%s'})\\nRETURN p\\nLIMIT 500\" $objectID }}\n[Assigned Users](/ui/explore?exploreSearchTab=cypher&searchType=cypher&cypherSearch={{ $query_assigned_users | b64enc | urlquery }})"
+          }
+        }
+      }
+    }
+  ],
+  "relationship_kinds": [
+    {
+      "name": "SCIM_Contains",
+      "description": "Organization contains a SCIM resource",
+      "is_traversable": true,
+      "info": {
+        "general": {
+          "title": "General",
+          "position": 1,
+          "markdown": {
+            "content": "Connects an organization to its SCIM users, groups, and roles. Each resource belongs to one organization, establishing its identity-provider ownership boundary.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/edges/scim_contains)"
+          }
+        }
+      }
+    },
+    {
+      "name": "SCIM_MemberOf",
+      "description": "User or group is a member of a group",
+      "is_traversable": true,
+      "info": {
+        "general": {
+          "title": "General",
+          "position": 1,
+          "markdown": {
+            "content": "Connects a user or nested group to its parent SCIM group. Membership is derived from group members and user groups attributes; synchronized membership changes can affect downstream application access.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/edges/scim_memberof)"
+          }
+        }
+      }
+    },
+    {
+      "name": "SCIM_HasRole",
+      "description": "User is assigned to a role",
+      "is_traversable": true,
+      "info": {
+        "general": {
+          "title": "General",
+          "position": 1,
+          "markdown": {
+            "content": "Connects a SCIM user to a role extracted from the user's roles attribute. It identifies users sharing a role assignment; it does not by itself describe the role's permissions.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/edges/scim_hasrole)"
+          }
+        }
+      }
+    },
+    {
+      "name": "SCIM_ManagerOf",
+      "description": "User is a manager of another user",
+      "is_traversable": false,
+      "info": {
+        "general": {
+          "title": "General",
+          "position": 1,
+          "markdown": {
+            "content": "Connects a manager to a direct report using the SCIM Enterprise User manager attribute. This non-traversable relationship provides organizational context, not an access path.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/edges/scim_managerof)"
+          }
+        }
+      }
+    },
+    {
+      "name": "SCIM_Provisioned",
+      "description": "Resources are provisioned between source and target systems over the SCIM protocol",
+      "is_traversable": false,
+      "info": {
+        "general": {
+          "title": "General",
+          "position": 1,
+          "markdown": {
+            "content": "Connects a source identity to its provisioned destination through a SCIM resource, following the direction of provisioning. This non-traversable relationship correlates identities; it does not establish authentication or access and does not imply password synchronization.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/edges/scim_provisioned)"
+          }
+        }
+      }
+    },
+    {
+      "name": "SCIM_MembershipSync",
+      "description": "Group membership is synchronized between source and target systems over the SCIM protocol",
+      "is_traversable": true,
+      "info": {
+        "general": {
+          "title": "General",
+          "position": 1,
+          "markdown": {
+            "content": "Represents configured membership synchronization from a source group to a destination group or team through a SCIM group. The edge follows the direction in which membership updates flow and can point into or out of the SCIM group.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/edges/scim_membershipsync)"
+          }
+        }
+      }
+    },
+    {
+      "name": "SCIM_PasswordSync",
+      "description": "User passwords are synchronized between source and target systems over the SCIM protocol",
+      "is_traversable": true,
+      "info": {
+        "general": {
+          "title": "General",
+          "position": 1,
+          "markdown": {
+            "content": "Represents configured password synchronization from a source user to a destination identity through a SCIM user. The edge follows password-update flow. Synchronization must be supported and enabled on both sides; provisioning alone does not imply it.\n\n[Online documentation](https://bloodhound.specterops.io/opengraph/extensions/scim/edges/scim_passwordsync)"
+          }
+        }
+      }
+    }
+  ],
+  "environments": [],
+  "relationship_findings": []
+}
