@@ -1,5 +1,5 @@
 {
-    "extensionSchemaPath": "bh-scim-extension.json",
+    "extensionSchemaPath": "schema.json",
     "extensionShortName": "SCIM",
     "gitHubBaseUrl": "https://github.com/SpecterOps/bloodhound-scim-extension",
     "stripTitlePrefix": "",

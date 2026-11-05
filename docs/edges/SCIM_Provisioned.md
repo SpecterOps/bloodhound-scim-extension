@@ -41,7 +41,7 @@ graph LR
         node3("fa:fa-user GH_ExternalIdentity dschrute")
     end
 
-    subgraph ServiceNow
+    subgraph Snowflake
         node4("fa:fa-user SNOW_User dschrute")
     end
 
