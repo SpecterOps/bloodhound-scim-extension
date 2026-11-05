@@ -9,7 +9,7 @@ An identity provider organization or tenant whose users, groups, and/or role ass
 ## Hybrid Relationships
 
 ```gotmpl
-{{ $objectID := .Properties.objectid | default "UnknownId" }}
+{{ $objectID := .Properties.objectid | default "UnknownId" | replace "\\" "\\\\" | replace "'" "\\'" }}
 ```
 
 ```gotmpl
@@ -33,7 +33,7 @@ An identity provider organization or tenant whose users, groups, and/or role ass
 ## Contained Resources
 
 ```gotmpl
-{{ $objectID := .Properties.objectid | default "UnknownId" }}
+{{ $objectID := .Properties.objectid | default "UnknownId" | replace "\\" "\\\\" | replace "'" "\\'" }}
 ```
 
 ```gotmpl

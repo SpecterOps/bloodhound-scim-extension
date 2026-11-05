@@ -6,7 +6,6 @@
 |--------|-------------|
 | [Okta_User] | [SCIM_User] |
 | [SCIM_User] | [Okta_User] |
-| [SCIM_User] | [GH_ExternalIdentity](https://bloodhound.specterops.io/opengraph/extensions/github/nodes/gh_externalidentity) |
 | [SCIM_User] | `SNOW_User` |
 
 ## General Information

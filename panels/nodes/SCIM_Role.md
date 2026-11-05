@@ -9,7 +9,7 @@ A role derived from the roles attribute of SCIM users, rather than a standalone 
 ## Relationships
 
 ```gotmpl
-{{ $objectID := .Properties.objectid | default "UnknownId" }}
+{{ $objectID := .Properties.objectid | default "UnknownId" | replace "\\" "\\\\" | replace "'" "\\'" }}
 ```
 
 ```gotmpl

@@ -9,7 +9,7 @@ A group provisioned through SCIM. Users and nested groups can be members. Config
 ## Hybrid Relationships
 
 ```gotmpl
-{{ $objectID := .Properties.objectid | default "UnknownId" }}
+{{ $objectID := .Properties.objectid | default "UnknownId" | replace "\\" "\\\\" | replace "'" "\\'" }}
 ```
 
 ```gotmpl
@@ -33,7 +33,7 @@ A group provisioned through SCIM. Users and nested groups can be members. Config
 ## Members
 
 ```gotmpl
-{{ $objectID := .Properties.objectid | default "UnknownId" }}
+{{ $objectID := .Properties.objectid | default "UnknownId" | replace "\\" "\\\\" | replace "'" "\\'" }}
 ```
 
 ```gotmpl

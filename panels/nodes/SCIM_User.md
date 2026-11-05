@@ -9,7 +9,7 @@ A user account provisioned through SCIM. If enabled in source and target systems
 ## Hybrid Relationships
 
 ```gotmpl
-{{ $objectID := .Properties.objectid | default "UnknownId" }}
+{{ $objectID := .Properties.objectid | default "UnknownId" | replace "\\" "\\\\" | replace "'" "\\'" }}
 ```
 
 ```gotmpl
@@ -33,7 +33,7 @@ A user account provisioned through SCIM. If enabled in source and target systems
 ## Organization
 
 ```gotmpl
-{{ $objectID := .Properties.objectid | default "UnknownId" }}
+{{ $objectID := .Properties.objectid | default "UnknownId" | replace "\\" "\\\\" | replace "'" "\\'" }}
 ```
 
 ```gotmpl
